@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>GRILLYAZH — официальный сайт</title>
+  <meta name="description" content="GRILLYAZH: новый сингл «Выше градус», музыка, концерты и контакты для организаторов." />
+  <meta name="theme-color" content="#000000" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="GRILLYAZH" />
+  <meta property="og:description" content="Новый сингл «Выше градус». Уже на всех площадках." />
+  <meta property="og:image" content="photos/og.jpg" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="photos/fisheye.webp" />
+</head>
+<body>
+  <!-- ===== Навигация ===== -->
+  <header class="nav is-light">
+    <div class="nav__inner">
+      <a class="nav__logo" href="#top" data-scroll aria-label="GRILLYAZH — наверх">GRILLYAZH</a>
+      <nav class="nav__links" aria-label="Разделы">
+        <a href="#single" data-scroll>Новинка</a>
+        <a href="#music" data-scroll>Музыка</a>
+        <a href="#concerts" data-scroll>Концерты</a>
+        <a href="#gallery" data-scroll>Фото</a>
+        <a href="#booking" data-scroll>Организаторам</a>
+        <a href="#contacts" data-scroll>Контакты</a>
+      </nav>
+      <a class="pill pill--red nav__cta" href="#concerts" data-scroll>Билеты</a>
+      <button class="nav__burger" type="button" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+    </div>
+    <nav class="sheet" aria-label="Меню">
+      <a href="#single" data-scroll>Новинка</a>
+      <a href="#music" data-scroll>Музыка</a>
+      <a href="#concerts" data-scroll>Концерты</a>
+      <a href="#gallery" data-scroll>Фото</a>
+      <a href="#booking" data-scroll>Организаторам</a>
+      <a href="#contacts" data-scroll>Контакты</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- ===== Первый экран: фото внутри букв, скролл «влетает» в букву ===== -->
+    <section class="hero" aria-label="GRILLYAZH" data-nav="hero">
+      <div class="hero__sticky">
+        <img class="hero__photo" src="photos/fisheye.webp" alt="GRILLYAZH" width="1333" height="2000" fetchpriority="high" />
+        <div class="hero__dim" aria-hidden="true"></div>
+        <div class="hero__shade" aria-hidden="true"></div>
+        <div class="hero__mask" aria-hidden="true"><span class="hero__word">GRILLYAZH</span></div>
+        <h1 class="visually-hidden">GRILLYAZH</h1>
+        <p class="hero__hint" aria-hidden="true">Листайте вниз</p>
+        <div class="hero__copy">
+          <p class="hero__eyebrow">Новый сингл</p>
+          <p class="hero__title">Выше градус.</p>
+          <div class="hero__ctas">
+            <a class="pill pill--white" href="#single" data-scroll>Слушать</a>
+            <a class="link link--white" href="#concerts" data-scroll>Концерты <span aria-hidden="true">›</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Новинка: «продуктовый» экран ===== -->
+    <section class="single" id="single" data-nav="light">
+      <div class="single__head">
+        <p class="eyebrow eyebrow--red reveal">Новый сингл · 2026</p>
+        <h2 class="single__title reveal"><span class="grad">Выше градус.</span></h2>
+        <p class="single__lead reveal">Трек, от которого в комнате становится жарче.<br />Уже на всех площадках.</p>
+        <div class="single__ctas reveal">
+          <a class="pill pill--red" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener" data-release-link>Слушать на Яндекс Музыке</a>
+          <a class="link" href="#music" data-scroll>Вся музыка <span aria-hidden="true">›</span></a>
+        </div>
+      </div>
+      <figure class="single__shot">
+        <img src="photos/studio.webp" alt="GRILLYAZH, студийный портрет" width="1600" height="2000" loading="lazy" />
+      </figure>
+    </section>
+
+    <!-- ===== Жара: обложка «плывёт» от градуса (WebGL) ===== -->
+    <section class="heat" aria-label="Выше градус" data-nav="dark">
+      <div class="heat__sticky">
+        <div class="heat__lines" aria-hidden="true">
+          <p class="heat__line">Сделай громче.</p>
+          <p class="heat__line">Ещё громче.</p>
+          <p class="heat__line heat__line--hot">Выше градус.</p>
+        </div>
+        <div class="heat__art">
+          <canvas class="heat__canvas" aria-hidden="true"></canvas>
+          <img class="heat__fallback" src="photos/cover-vyshe-gradus.webp" alt="Обложка сингла «Выше градус»" />
+        </div>
+        <div class="heat__temp" aria-hidden="true"><span data-temp>36,6</span>°</div>
+      </div>
+    </section>
+
+    <!-- ===== Музыка ===== -->
+    <section class="music" id="music" data-nav="light">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="h2 reveal">Музыка.</h2>
+          <a class="link reveal" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener">Всё на Яндекс Музыке <span aria-hidden="true">›</span></a>
+        </div>
+      </div>
+      <div class="shelf" data-releases></div>
+      <div class="wrap shelf__nav">
+        <button class="round" type="button" data-shelf="-1" aria-label="Назад">‹</button>
+        <button class="round" type="button" data-shelf="1" aria-label="Вперёд">›</button>
+      </div>
+    </section>
+
+    <!-- ===== Концерты ===== -->
+    <section class="concerts" id="concerts" data-nav="light">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="h2 reveal">Концерты.</h2>
+        </div>
+        <div data-upcoming></div>
+        <div data-past></div>
+      </div>
+    </section>
+
+    <!-- ===== Фото ===== -->
+    <section class="gallery" id="gallery" data-nav="dark">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="h2 reveal">Фото.</h2>
+          <p class="section-head__note reveal">Сцена, студия, улица.</p>
+        </div>
+        <div class="bento" data-bento></div>
+      </div>
+    </section>
+
+    <!-- ===== Организаторам ===== -->
+    <section class="booking" id="booking" data-nav="light">
+      <div class="wrap booking__grid">
+        <div class="booking__intro">
+          <p class="eyebrow reveal">Для организаторов</p>
+          <h2 class="h2 reveal">Позовите GRILLYAZH на&nbsp;свою сцену.</h2>
+          <p class="booking__lead reveal">Клуб, фестиваль или городское событие. Заполните заявку — она откроется в Telegram у менеджера, останется только отправить.</p>
+          <dl class="facts reveal">
+            <div><dt>Менеджер</dt><dd><a href="https://t.me/dobrayasanya" target="_blank" rel="noopener">@dobrayasanya</a></dd></div>
+            <div><dt>Не продаются</dt><dd>видеоприветы и реклама</dd></div>
+            <div><dt>Не нужны</dt><dd>фиты и биты</dd></div>
+            <div><dt>Пишите</dt><dd>только по рабочим вопросам</dd></div>
+          </dl>
+        </div>
+        <form class="form reveal" novalidate>
+          <div class="form__row">
+            <label class="field"><input name="city" required placeholder=" " autocomplete="address-level2" /><span>Город</span></label>
+            <label class="field"><input name="date" type="date" required placeholder=" " /><span>Дата</span></label>
+          </div>
+          <div class="form__row">
+            <label class="field"><input name="venue" placeholder=" " /><span>Площадка</span></label>
+            <label class="field"><input name="capacity" inputmode="numeric" placeholder=" " /><span>Вместимость</span></label>
+          </div>
+          <div class="seg" role="radiogroup" aria-label="Формат">
+            <label><input type="radio" name="format" value="Сольный концерт" checked /><span>Сольный</span></label>
+            <label><input type="radio" name="format" value="Фестиваль" /><span>Фестиваль</span></label>
+            <label><input type="radio" name="format" value="Клубное событие" /><span>Клуб</span></label>
+            <label><input type="radio" name="format" value="Другое" /><span>Другое</span></label>
+          </div>
+          <label class="field"><input name="contact" required placeholder=" " /><span>Ваш Telegram или телефон</span></label>
+          <label class="field"><textarea name="note" rows="3" placeholder=" "></textarea><span>Бюджет, тайминг, детали</span></label>
+          <button class="pill pill--red pill--lg" type="submit">Отправить менеджеру</button>
+          <p class="form__status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== Контакты ===== -->
+    <section class="contacts" id="contacts" data-nav="light">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="h2 reveal">На связи.</h2>
+        </div>
+        <ul class="links" data-socials></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" data-nav="light">
+    <div class="wrap">
+      <p class="footer__mark">GRILLYAZH</p>
+      <div class="footer__row">
+        <span>© <span class="year"></span> GRILLYAZH. Все права защищены.</span>
+        <a href="#top" data-scroll>Наверх</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lightbox" aria-hidden="true" role="dialog" aria-label="Просмотр фото">
+    <img class="lightbox__img" alt="" />
+    <button class="round lightbox__close" type="button" aria-label="Закрыть">✕</button>
+    <button class="round lightbox__prev" type="button" aria-label="Предыдущее фото">‹</button>
+    <button class="round lightbox__next" type="button" aria-label="Следующее фото">›</button>
+  </div>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
