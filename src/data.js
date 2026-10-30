@@ -52,12 +52,13 @@ export const concerts = [
   },
 ];
 
-// Галерея (сетка «бенто»). size: big — большая плитка, wide — широкая, tall — высокая, без size — обычная.
+// Фото: три колонки, которые при прокрутке едут с разной скоростью.
+// name — файл в public/photos, ratio — пропорции кадра (ширина / высота), caption — подпись.
 export const gallery = [
-  { name: 'studio', alt: 'GRILLYAZH, студийный портрет', size: 'tall' },
-  { name: 'gallery-1', alt: 'GRILLYAZH на сцене, зал с фонариками', size: 'big' },
-  { name: 'gallery-3', alt: 'GRILLYAZH на крыше на закате' },
-  { name: 'gallery-4', alt: 'GRILLYAZH с микрофоном, чёрно-белое фото' },
-  { name: 'fisheye', alt: 'GRILLYAZH, портрет на закате', size: 'wide' },
-  { name: 'gallery-2', alt: 'Коллаж из кадров GRILLYAZH', size: 'wide' },
+  { name: 'fisheye', ratio: 2 / 3, caption: 'Улица', alt: 'GRILLYAZH, портрет на закате' },
+  { name: 'gallery-4', ratio: 1, caption: 'Сцена', alt: 'GRILLYAZH с микрофоном, чёрно-белое фото' },
+  { name: 'gallery-1', ratio: 1, caption: 'Зал', alt: 'GRILLYAZH на сцене, зал с фонариками' },
+  { name: 'studio', ratio: 4 / 5, caption: 'Студия', alt: 'GRILLYAZH, студийный портрет' },
+  { name: 'gallery-3', ratio: 1, caption: 'Крыша', alt: 'GRILLYAZH на крыше на закате' },
+  { name: 'gallery-2', ratio: 1, caption: 'Коллаж', alt: 'Коллаж из кадров GRILLYAZH' },
 ];
