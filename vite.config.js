@@ -4,5 +4,6 @@ import { defineConfig } from 'vite';
 // и в подпапке (GitHub Pages: matbank40.github.io/grillyazh/).
 export default defineConfig({
   base: './',
-  build: { chunkSizeWarningLimit: 1200 },
+  // es2022 — ради await на верхнем уровне в main.js
+  build: { chunkSizeWarningLimit: 1200, target: 'es2022' },
 });

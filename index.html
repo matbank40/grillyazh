@@ -4,25 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>GRILLYAZH — официальный сайт</title>
-  <meta name="description" content="GRILLYAZH: новый сингл «Выше градус», музыка, концерты и контакты для организаторов." />
+  <meta name="description" content="GRILLYAZH: хиты, новый релиз «После прослушивания сжечь», концерты и контакты для организаторов." />
   <meta name="theme-color" content="#0b0a09" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="GRILLYAZH — Выше градус" />
-  <meta property="og:description" content="Новый сингл уже на всех площадках." />
+  <meta property="og:title" content="GRILLYAZH" />
+  <meta property="og:description" content="Привет, это я. Включай звук." />
   <meta property="og:image" content="photos/og.jpg" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="preload" as="image" href="photos/fisheye.webp" />
+  <link rel="preload" as="image" href="photos/stage-dive.webp" />
 </head>
 <body class="is-loading">
-  <!-- ===== Загрузка ===== -->
-  <div class="loader" aria-hidden="true">
+  <!-- ===== Загрузка и вход со звуком ===== -->
+  <div class="loader">
+    <div class="gate" aria-hidden="true">
+      <p class="serif gate__hello">привет, это я</p>
+      <button class="gate__play" type="button">
+        <span class="gate__ring" aria-hidden="true"></span>
+        <span class="gate__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" fill="currentColor" /></svg></span>
+        <span class="gate__label">Войти со звуком</span>
+      </button>
+      <button class="gate__mute label" type="button">Без звука</button>
+    </div>
     <div class="loader__row">
       <span class="label">GRILLYAZH</span>
       <span class="loader__count"><b>000</b></span>
-      <span class="label">Выше градус</span>
+      <span class="label">Наденьте наушники</span>
     </div>
     <div class="loader__bar"><span></span></div>
   </div>
@@ -33,24 +42,24 @@
   <header class="nav">
     <a class="nav__logo" href="#top" data-scroll aria-label="GRILLYAZH — наверх">GRILLYAZH</a>
     <nav class="nav__links" aria-label="Разделы">
-      <a href="#single" data-scroll>Сингл</a>
-      <a href="#music" data-scroll>Музыка</a>
+      <a href="#release" data-scroll>Релиз</a>
+      <a href="#hits" data-scroll>Хиты</a>
       <a href="#tour" data-scroll>Концерты</a>
       <a href="#photo" data-scroll>Фото</a>
       <a href="#booking" data-scroll>Букинг</a>
     </nav>
-    <a class="nav__cta" href="#tour" data-scroll><i class="dot"></i>Билеты</a>
+    <a class="nav__cta" href="#booking" data-scroll><i class="dot"></i>Пригласить</a>
     <button class="nav__menu" type="button" aria-expanded="false">Меню</button>
   </header>
 
   <div class="menu" aria-hidden="true">
     <nav class="menu__links">
-      <a href="#single" data-scroll><small>01</small>Сингл</a>
-      <a href="#music" data-scroll><small>02</small>Музыка</a>
-      <a href="#tour" data-scroll><small>03</small>Концерты</a>
-      <a href="#photo" data-scroll><small>04</small>Фото</a>
-      <a href="#booking" data-scroll><small>05</small>Букинг</a>
-      <a href="#contacts" data-scroll><small>06</small>Контакты</a>
+      <a href="#release" data-scroll><small>01</small>Релиз</a>
+      <a href="#hits" data-scroll><small>02</small>Хиты</a>
+      <a href="#music" data-scroll><small>03</small>Музыка</a>
+      <a href="#tour" data-scroll><small>04</small>Концерты</a>
+      <a href="#photo" data-scroll><small>05</small>Фото</a>
+      <a href="#booking" data-scroll><small>06</small>Букинг</a>
     </nav>
     <div class="menu__foot" data-menu-socials></div>
   </div>
@@ -60,7 +69,7 @@
     <section class="hero">
       <div class="hero__media">
         <canvas class="hero__canvas" aria-hidden="true"></canvas>
-        <img class="hero__fallback" src="photos/fisheye.webp" alt="GRILLYAZH" width="1333" height="2000" />
+        <img class="hero__fallback" src="photos/stage-dive.webp" alt="GRILLYAZH прыгает со сцены в зал" width="2000" height="1359" />
         <div class="hero__shade" aria-hidden="true"></div>
       </div>
 
@@ -69,55 +78,72 @@
         <p class="label hero__hint">Проведи по фото</p>
       </div>
 
-      <div class="hero__release">
-        <p class="serif hero__serif">новый сингл</p>
-        <p class="hero__song"><span class="line"><span>Выше градус</span></span></p>
-        <div class="hero__btns">
-          <a class="btn btn--light" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener" data-release-link>Слушать</a>
-          <a class="btn btn--ghost" href="#tour" data-scroll>Концерты</a>
-        </div>
+      <div class="hero__hello" aria-hidden="true">
+        <p class="serif"><span class="line"><span>привет,</span></span><span class="line"><span>это я —</span></span></p>
       </div>
+
+      <div class="hero__release" data-hero-release></div>
 
       <h1 class="hero__word" aria-label="GRILLYAZH"><span class="hero__letters" aria-hidden="true">GRILLYAZH</span></h1>
     </section>
 
-    <!-- ===== Сингл: обложка раскрывается, слова разъезжаются ===== -->
-    <section class="single" id="single">
-      <div class="single__pin">
-        <p class="label single__label"><span>01</span>Новый сингл · 2026</p>
-        <div class="single__title" aria-hidden="true">
-          <span class="single__w single__w--l">Выше</span>
-          <span class="single__w single__w--r">градус</span>
+    <!-- ===== Предстоящий релиз: обложка сгорает ===== -->
+    <section class="release" id="release">
+      <div class="release__pin">
+        <p class="label release__label"><span>01</span><span data-release-kicker>Предстоящий релиз</span></p>
+        <h2 class="release__title">
+          <span class="release__w release__w--a" data-release-a></span>
+          <span class="release__w release__w--b serif" data-release-b></span>
+        </h2>
+        <div class="release__stage">
+          <div class="release__under">
+            <p class="serif release__name" data-release-name></p>
+            <p class="label" data-release-when>Выходит</p>
+            <p class="release__date" data-release-date></p>
+            <div class="countdown" data-countdown></div>
+            <a class="btn btn--light btn--lg" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener" data-release-cta>Пресейв на Яндекс Музыке ↗</a>
+          </div>
+          <div class="release__cover">
+            <canvas class="release__canvas" aria-hidden="true"></canvas>
+            <img class="release__img" alt="" data-release-img />
+          </div>
         </div>
-        <div class="single__cover">
-          <img class="single__blur" src="photos/cover-vyshe-gradus.webp" alt="" aria-hidden="true" />
-          <img class="single__img" src="photos/cover-vyshe-gradus.webp" alt="Обложка сингла «Выше градус»" />
+        <p class="label release__hint">Листай — обложка сгорит</p>
+      </div>
+    </section>
+
+    <!-- ===== Хиты: треки сменяются при прокрутке ===== -->
+    <section class="hits" id="hits">
+      <div class="hits__pin">
+        <div class="hits__bgs" data-hit-bgs aria-hidden="true"></div>
+        <div class="hits__shade" aria-hidden="true"></div>
+        <div class="hits__top">
+          <p class="label"><span>02</span>Хиты</p>
+          <p class="serif hits__intro">наверняка ты слышал</p>
         </div>
-        <div class="single__cta">
-          <h2 class="visually-hidden">Выше градус</h2>
-          <p class="serif single__serif">уже на всех площадках</p>
-          <a class="btn btn--light btn--lg" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener" data-release-link>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor" /></svg>Слушать на Яндекс Музыке
-          </a>
+        <div class="hits__list" data-hits></div>
+        <div class="hits__foot">
+          <div class="hits__steps" data-hit-steps></div>
+          <button class="hits__sound label" type="button" data-sound-chip>Включить звук</button>
         </div>
       </div>
     </section>
 
     <!-- ===== Манифест: строки с фото внутри текста ===== -->
     <section class="manifest" aria-label="Об артисте">
-      <p class="label manifest__label"><span>02</span>Об артисте</p>
+      <p class="label manifest__label"><span>03</span>Об артисте</p>
       <p class="manifest__text">
         <span class="mrow" data-dir="1">Песни про <i class="pic"><img src="photos/fisheye.webp" alt="" loading="lazy" /></i> город,</span>
-        <span class="mrow" data-dir="-1">ночь <i class="pic pic--wide"><img src="photos/gallery-1.webp" alt="" loading="lazy" /></i> и людей,</span>
-        <span class="mrow" data-dir="1">на которых <i class="pic"><img src="photos/studio.webp" alt="" loading="lazy" /></i></span>
+        <span class="mrow" data-dir="-1">ночь <i class="pic pic--wide"><img src="photos/stage-dive.webp" alt="" loading="lazy" /></i> и людей,</span>
+        <span class="mrow" data-dir="1">на которых <i class="pic"><img src="photos/crowd.webp" alt="" loading="lazy" /></i></span>
         <span class="mrow mrow--accent" data-dir="-1"><em class="serif">двигаешься.</em></span>
       </p>
     </section>
 
-    <!-- ===== Музыка ===== -->
+    <!-- ===== Дискография ===== -->
     <section class="music" id="music">
       <header class="head">
-        <p class="label"><span>03</span>Дискография</p>
+        <p class="label"><span>04</span>Дискография</p>
         <h2 class="head__title"><span class="line"><span>Музыка</span></span></h2>
       </header>
       <div class="music__grid">
@@ -132,7 +158,7 @@
     <!-- ===== Концерты ===== -->
     <section class="tour" id="tour">
       <header class="head">
-        <p class="label"><span>04</span>Концерты</p>
+        <p class="label"><span>05</span>Концерты</p>
         <h2 class="head__title"><span class="line"><span>Тур</span></span><span class="serif head__serif">живьём</span></h2>
       </header>
       <div data-upcoming></div>
@@ -142,7 +168,7 @@
     <!-- ===== Фото ===== -->
     <section class="photo" id="photo">
       <header class="head">
-        <p class="label"><span>05</span>Фото</p>
+        <p class="label"><span>06</span>Фото</p>
         <h2 class="head__title"><span class="line"><span>Кадры</span></span></h2>
       </header>
       <div class="cols" data-cols></div>
@@ -152,7 +178,7 @@
     <section class="booking" id="booking">
       <div class="booking__grid">
         <div>
-          <p class="label"><span>06</span>Для организаторов</p>
+          <p class="label"><span>07</span>Для организаторов</p>
           <h2 class="head__title booking__title"><span class="line"><span>Позвать</span></span><span class="line"><span>на сцену</span></span></h2>
           <p class="booking__lead">Клуб, фестиваль или городское событие. Заявка откроется в Telegram у менеджера — останется нажать «отправить».</p>
           <ul class="rules">
@@ -188,7 +214,7 @@
   <!-- ===== Подвал и контакты ===== -->
   <footer class="footer" id="contacts">
     <div class="footer__top">
-      <p class="label"><span>07</span>На связи</p>
+      <p class="label"><span>08</span>На связи</p>
       <ul class="socials" data-socials></ul>
     </div>
     <p class="footer__word" aria-hidden="true">GRILLYAZH</p>
@@ -198,12 +224,20 @@
     </div>
   </footer>
 
-  <!-- ===== Мини-плеер ===== -->
-  <a class="mini" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener" data-release-link aria-label="Слушать «Выше градус»">
-    <img src="photos/cover-vyshe-gradus.webp" alt="" />
-    <span class="mini__text"><small>Новый сингл</small><b>Выше градус</b></span>
-    <span class="mini__eq" aria-hidden="true"><i></i><i></i><i></i></span>
-  </a>
+  <!-- ===== Плеер ===== -->
+  <div class="player" aria-label="Плеер">
+    <button class="player__btn" type="button" aria-label="Пауза" data-player-toggle>
+      <img class="player__cover" alt="" data-player-cover />
+      <span class="player__state" aria-hidden="true"></span>
+    </button>
+    <div class="player__text">
+      <small data-player-artists>GRILLYAZH</small>
+      <b data-player-title>—</b>
+    </div>
+    <span class="player__eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <a class="player__link label" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener" data-player-link>Полностью ↗</a>
+    <span class="player__bar" aria-hidden="true"><span data-player-progress></span></span>
+  </div>
 
   <div class="lightbox" aria-hidden="true" role="dialog" aria-label="Просмотр фото">
     <img class="lightbox__img" alt="" />

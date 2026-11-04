@@ -26,10 +26,30 @@ export const manager = {
   rules: ['Видеоприветы и реклама не продаются', 'Фиты и биты не нужны', 'Пишите только по рабочим вопросам'],
 };
 
-// Релизы — от новых к старым. cover — имя файла в public/photos (без .webp).
+// Предстоящий релиз. Если сборка на GitHub достала данные с Яндекс Музыки (yandex.json),
+// сайт возьмёт оттуда свежий предстоящий релиз, а это — запасной вариант.
+export const upcoming = {
+  title: 'После прослушивания сжечь',
+  artists: 'GRILLYAZH',
+  releaseDate: '2026-11-06T00:00:00+03:00',
+  cover: 'cover-upcoming',
+  url: links.yandex,
+};
+
+// Хиты, которые играют на сайте: превью припева в public/audio (около 40 секунд).
+// photo — фон экрана трека, cover — обложка.
+export const hits = [
+  { id: 'poslednim-letom', title: 'последним летом', artists: 'madk1d, GRILLYAZH', year: 2025, audio: 'audio/poslednim-letom.mp3', cover: 'cover-poslednim-letom', photo: 'stage-mic', url: '' },
+  { id: 'v-gorode', title: 'В городе', artists: 'GRILLYAZH, f0lk', year: 2023, audio: 'audio/v-gorode.mp3', cover: 'cover-v-gorode', photo: 'crowd', url: '' },
+  { id: 'dvinulsya', title: 'Двинулся на тебе', artists: 'GRILLYAZH, Кишлак', year: 2022, audio: 'audio/dvinulsya.mp3', cover: 'cover-dvinulsya', photo: 'stage-red', url: '' },
+];
+
+// Дискография — от новых к старым. cover — имя файла в public/photos (без .webp).
 // url — ссылка на релиз; если её нет, кнопка ведёт на страницу артиста в Яндекс Музыке.
+// Если есть yandex.json, список берётся оттуда.
 export const releases = [
-  { title: 'Выше градус', type: 'Сингл', year: 2026, artists: 'GRILLYAZH', cover: 'cover-vyshe-gradus', isNew: true, url: '' },
+  { title: 'Выше градус', type: 'Сингл', year: 2026, artists: 'GRILLYAZH', cover: 'cover-vyshe-gradus', url: '' },
+  { title: 'последним летом', type: 'Сингл', year: 2025, artists: 'madk1d, GRILLYAZH', cover: 'cover-poslednim-letom', url: '' },
   { title: 'В городе', type: 'Сингл', year: 2023, artists: 'GRILLYAZH, f0lk', cover: 'cover-v-gorode', url: '' },
   { title: 'Двинулся на тебе', type: 'Сингл', year: 2022, artists: 'GRILLYAZH, Кишлак', cover: 'cover-dvinulsya', url: '' },
 ];
@@ -55,10 +75,10 @@ export const concerts = [
 // Фото: три колонки, которые при прокрутке едут с разной скоростью.
 // name — файл в public/photos, ratio — пропорции кадра (ширина / высота), caption — подпись.
 export const gallery = [
-  { name: 'fisheye', ratio: 2 / 3, caption: 'Улица', alt: 'GRILLYAZH, портрет на закате' },
-  { name: 'gallery-4', ratio: 1, caption: 'Сцена', alt: 'GRILLYAZH с микрофоном, чёрно-белое фото' },
-  { name: 'gallery-1', ratio: 1, caption: 'Зал', alt: 'GRILLYAZH на сцене, зал с фонариками' },
+  { name: 'stage-dive', ratio: 2000 / 1359, caption: 'Прыжок', alt: 'GRILLYAZH прыгает со сцены в зал' },
+  { name: 'crowd', ratio: 1396 / 2000, caption: 'В толпе', alt: 'GRILLYAZH смеётся в толпе фанатов' },
+  { name: 'stage-mic', ratio: 2000 / 1481, caption: 'Сцена', alt: 'GRILLYAZH с микрофоном, чёрно-белое фото' },
   { name: 'studio', ratio: 4 / 5, caption: 'Студия', alt: 'GRILLYAZH, студийный портрет' },
-  { name: 'gallery-3', ratio: 1, caption: 'Крыша', alt: 'GRILLYAZH на крыше на закате' },
-  { name: 'gallery-2', ratio: 1, caption: 'Коллаж', alt: 'Коллаж из кадров GRILLYAZH' },
+  { name: 'stage-red', ratio: 2000 / 1334, caption: 'Улыбка', alt: 'GRILLYAZH на сцене в красном свете' },
+  { name: 'fisheye', ratio: 2 / 3, caption: 'Улица', alt: 'GRILLYAZH, портрет на закате' },
 ];

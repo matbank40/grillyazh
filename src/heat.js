@@ -19,6 +19,7 @@ uniform vec2 uFocus;
 uniform float uTime;
 uniform float uScroll;
 uniform float uIntro;
+uniform float uBeat;
 uniform vec3 uTrail[${TRAIL}];
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -40,7 +41,7 @@ void main() {
   vec2 uv = vUv;
   float aspect = uRes.x / uRes.y;
   // плавное приближение при загрузке и прокрутке
-  float zoom = 1.0 + (1.0 - uIntro) * 0.18 + uScroll * 0.12;
+  float zoom = 1.0 + (1.0 - uIntro) * 0.18 + uScroll * 0.12 + uBeat * 0.018;
   uv = (uv - 0.5) / zoom + 0.5;
 
   vec2 d = vec2(0.0);
@@ -59,10 +60,10 @@ void main() {
   float rise = smoothstep(1.0, 0.0, vUv.y);
   float s1 = noise(vec2(vUv.x * 7.0, vUv.y * 4.0 - uTime * 0.9));
   float s2 = noise(vec2(vUv.x * 15.0 + 3.0, vUv.y * 9.0 - uTime * 1.6));
-  d += vec2(s1 - 0.5, (s2 - 0.5) * 0.5) * 0.006 * (0.4 + rise);
+  d += vec2(s1 - 0.5, (s2 - 0.5) * 0.5) * (0.006 + uBeat * 0.008) * (0.4 + rise);
 
   vec2 q = cover(uv + d);
-  float ca = 0.0012 + heat * 0.012;
+  float ca = 0.0008 + heat * 0.01 + uBeat * 0.0022;
   vec3 col;
   col.r = texture2D(uTex, cover(uv + d * 1.25 + vec2(ca, 0.0))).r;
   col.g = texture2D(uTex, q).g;
@@ -70,6 +71,8 @@ void main() {
 
   // тёплый ожог по следу
   col += vec3(0.42, 0.08, 0.0) * heat * 0.28;
+  // удар баса: короткая вспышка света
+  col *= 1.0 + uBeat * 0.1;
   // плёночный контраст и виньетка
   col = (col - 0.5) * 1.06 + 0.5;
   float vig = smoothstep(1.25, 0.35, length((vUv - 0.5) * vec2(aspect * 0.8, 1.0)));
@@ -97,10 +100,10 @@ export function createHeroFx(canvas, src, focus = [0.45, 0.4]) {
   gl.enableVertexAttribArray(loc);
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 
-  const U = Object.fromEntries(['uRes', 'uImg', 'uFocus', 'uTime', 'uScroll', 'uIntro', 'uTrail'].map((n) => [n, gl.getUniformLocation(prog, n)]));
+  const U = Object.fromEntries(['uRes', 'uImg', 'uFocus', 'uTime', 'uScroll', 'uIntro', 'uBeat', 'uTrail'].map((n) => [n, gl.getUniformLocation(prog, n)]));
   gl.uniform2f(U.uFocus, focus[0], 1 - focus[1]);
 
-  const state = { scroll: 0, intro: 0, ready: false };
+  const state = { scroll: 0, intro: 0, beat: 0, ready: false };
   const trail = new Float32Array(TRAIL * 3);
   let head = 0;
   let last = null;
@@ -161,6 +164,7 @@ export function createHeroFx(canvas, src, focus = [0.45, 0.4]) {
     gl.uniform1f(U.uTime, (t - t0) / 1000);
     gl.uniform1f(U.uScroll, state.scroll);
     gl.uniform1f(U.uIntro, state.intro);
+    gl.uniform1f(U.uBeat, state.beat);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   };
 
