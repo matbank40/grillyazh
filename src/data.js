@@ -81,4 +81,5 @@ export const gallery = [
   { name: 'studio', ratio: 4 / 5, caption: 'Студия', alt: 'GRILLYAZH, студийный портрет' },
   { name: 'stage-red', ratio: 2000 / 1334, caption: 'Улыбка', alt: 'GRILLYAZH на сцене в красном свете' },
   { name: 'fisheye', ratio: 2 / 3, caption: 'Улица', alt: 'GRILLYAZH, портрет на закате' },
+  { name: 'stage-walk', ratio: 1334 / 2000, caption: 'Выход', alt: 'GRILLYAZH идёт по сцене и улыбается' },
 ];
