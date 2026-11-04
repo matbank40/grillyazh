@@ -41,15 +41,22 @@ async function loadYandex() {
     const r = await fetch(asset('yandex.json'), { cache: 'no-cache' });
     if (!r.ok) return null;
     const j = await r.json();
-    return j && j.source === 'yandex' ? j : null;
+    // Яндекс закрыт для серверов GitHub, поэтому сборка берёт данные из Apple Music и Deezer
+    return j && ['yandex', 'apple', 'deezer'].includes(j.source) && j.releases?.length ? j : null;
   } catch { return null; }
 }
 
 function mergeData(y) {
   const now = Date.now();
   const yReleases = (y?.releases || []).filter((r) => r.title);
+  const TYPES = { single: 'Сингл', album: 'Альбом', ep: 'EP' };
+  // в дискографии — восемь самых свежих релизов, остальное по ссылке «Вся музыка»
   const releases = yReleases.length
-    ? yReleases.map((r) => ({ ...r, type: r.type || 'Релиз', artists: r.artists || 'GRILLYAZH' }))
+    ? yReleases
+      .slice()
+      .sort((a, b) => new Date(b.releaseDate || `${b.year}-01-01`) - new Date(a.releaseDate || `${a.year}-01-01`))
+      .slice(0, 8)
+      .map((r) => ({ ...r, type: TYPES[r.type] || r.type || 'Релиз', artists: r.artists || 'GRILLYAZH' }))
     : baseReleases;
   // предстоящий релиз; если его нет — показываем самый свежий вышедший
   let rel = y?.upcoming || null;
