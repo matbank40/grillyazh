@@ -4,6 +4,9 @@ on:
   push:
     branches: [main, claude/focused-bohr-b2yhti]
   workflow_dispatch:
+  # Раз в 3 часа подтягиваем свежие релизы и анонсы с Яндекс Музыки
+  schedule:
+    - cron: '17 */3 * * *'
 
 permissions:
   contents: read
@@ -24,6 +27,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Sync Yandex Music
+        run: node scripts/yandex-sync.mjs
+        env:
+          YANDEX_DEBUG: '1'
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
