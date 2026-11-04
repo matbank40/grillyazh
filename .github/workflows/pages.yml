@@ -27,6 +27,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Probe sources
+        run: node scripts/yandex-probe.mjs
       - name: Sync Yandex Music
         run: node scripts/yandex-sync.mjs
         env:
