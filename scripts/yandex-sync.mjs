@@ -73,7 +73,8 @@ async function fromYandex() {
       const extra = [b?.upcomingAlbums, b?.upcoming, b?.presaveAlbums, b?.futureAlbums].flat().filter(Boolean);
       return { albums: [...(d?.albums || []), ...(b?.albums || []), ...(b?.alsoAlbums || []), ...extra], tracks: b?.popularTracks || [] };
     },
-    ...['ru', 'by', 'kz', 'uz'].map((tld) => async () => {
+    // web-handlers отвечают только из России; с серверов GitHub приходит HTML-заглушка
+    ...['ru'].map((tld) => async () => {
       const host = `music.yandex.${tld}`;
       const j = await getJson(`https://${host}/handlers/artist.jsx?artist=${ARTIST_ID}&what=albums&lang=ru&external-domain=${host}&overembed=false`);
       if (!j?.albums) return null;
@@ -229,7 +230,7 @@ async function checkCover(url) {
 
 async function main() {
   mkdirSync(dirname(OUT), { recursive: true });
-  if (DEBUG) await webDiagnostics();
+  if (process.env.YANDEX_DEBUG === '2') await webDiagnostics();
   const raw = (await fromYandex()) || (await fromItunes());
   // Анонсы с Deezer добавляем, если такого названия ещё нет
   if (raw && raw.source !== 'yandex') {
