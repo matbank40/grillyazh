@@ -112,7 +112,7 @@ function renderRelease({ rel, isOut }) {
       <img src="${cover(rel.cover)}" alt="" />
       <span><small>${when}</small><b>${esc(rel.title)}</b><span class="arr-link">${isOut ? 'Слушать' : 'Пресейв'} ↗</span></span>
     </a>`;
-  $('[data-gate-note]').textContent = isOut ? `новый релиз — «${rel.title}»` : `${p.day} ${MONTHS[p.month]} — «${rel.title}»`;
+  $('[data-gate-note]').textContent = isOut ? `Новый релиз «${rel.title}»` : `Новый релиз «${rel.title}» — ${p.day} ${MONTHS[p.month]}`;
   // напоминание в календарь (.ics) — для тех, кто не залогинен в Яндексе
   const remind = $('[data-remind]');
   if (isOut) remind.remove();
@@ -143,7 +143,7 @@ function renderHits(tracks) {
     <article class="hit${i === 0 ? ' on' : ''}" data-i="${i}">
       <img class="hit__cover" src="${cover(t.cover)}" alt="Обложка: ${esc(t.title)}" loading="lazy" />
       <div>
-        <p class="label hit__meta"><span>${pad2(i + 1)}</span>${t.year} · сингл</p>
+        <p class="label hit__meta">${t.year} · сингл</p>
         <h3 class="hit__title"><span class="line"><span>${esc(t.title)}</span></span></h3>
         <p class="hit__artists">${esc(t.artists)}</p>
       </div>
@@ -155,7 +155,6 @@ function renderHits(tracks) {
 function renderMusic(releases) {
   $('[data-releases]').innerHTML = releases.map((r, i) => `
     <li><a class="track rv" href="${esc(r.url || links.yandex)}" target="_blank" rel="noopener" data-i="${i}">
-      <span class="track__n">${pad2(i + 1)}</span>
       <img class="track__thumb" src="${cover(r.cover)}" alt="" loading="lazy" />
       <span>
         <h3 class="track__title">${esc(r.title)}</h3>
@@ -191,7 +190,7 @@ function renderTour() {
       <div class="soon">
         <a class="soon__marquee" href="${links.telegram}" target="_blank" rel="noopener" aria-label="Новые даты — скоро. Telegram-канал"><div class="soon__track" aria-hidden="true">${word.repeat(6)}</div></a>
         <div class="soon__row rv">
-          <p>анонсы и старт продаж — первыми в телеграме</p>
+          <p>Анонсы и старт продаж — первыми в Telegram-канале.</p>
           <a class="btn btn--light btn--lg" href="${links.telegram}" target="_blank" rel="noopener">Подписаться ↗</a>
         </div>
       </div>`;
@@ -206,7 +205,7 @@ function renderPhotos() {
     <div class="col">${col.map((g) => `
       <figure class="ph" data-i="${g.i}" role="button" tabindex="0" aria-label="Открыть фото: ${esc(g.alt)}">
         <div class="ph__frame" style="aspect-ratio:${g.ratio}"><img src="${photo(g.name)}" alt="${esc(g.alt)}" loading="lazy" /></div>
-        <figcaption class="label"><span>${pad2(g.i + 1)}</span>${esc(g.caption)}</figcaption>
+        <figcaption class="label">${esc(g.caption)}</figcaption>
       </figure>`).join('')}
     </div>`).join('');
 }
@@ -587,7 +586,7 @@ function intro() {
   const crawl = gsap.to(p, { v: 82, duration: 1.4, ease: 'power2.out', onUpdate: draw });
   if (!reduceMotion) {
     gsap.set(heroChars, { yPercent: 110 });
-    gsap.set('.hero__release, .hero__top', { opacity: 0, y: 24 });
+    gsap.set('.hero__release', { opacity: 0, y: 24 });
     fx?.start();
   }
 
@@ -607,7 +606,7 @@ function intro() {
       .to(fx ? fx.state : {}, { intro: 1, duration: 2.6, ease: 'expo.out' }, '<0.3')
       .add(() => $$('.hero__hello .line').forEach((l, i) => setTimeout(() => l.classList.add('in'), i * 140)), '<0.2')
       .to(heroChars, { yPercent: 0, duration: 1.5, ease: 'expo.out', stagger: 0.045 }, '<0.3')
-      .to('.hero__release, .hero__top', { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', stagger: 0.08 }, '<0.3');
+      .to('.hero__release', { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', stagger: 0.08 }, '<0.3');
   };
   $('.gate__play').addEventListener('click', () => enter(true));
   $('.gate__mute').addEventListener('click', () => enter(false));
