@@ -20,6 +20,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,10 +28,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Probe sources
-        run: node scripts/yandex-probe.mjs
       - name: Sync Yandex Music
         run: node scripts/yandex-sync.mjs
+        timeout-minutes: 3
+        continue-on-error: true
         env:
           YANDEX_DEBUG: '1'
       - run: npm run build

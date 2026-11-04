@@ -25,7 +25,7 @@ const names = (artists) => (artists || []).map((a) => a.name).filter(Boolean).jo
 
 async function getJson(url) {
   try {
-    const res = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(20000) });
+    const res = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(8000) });
     const text = await res.text();
     log(`GET ${url} → ${res.status}, ${text.length} байт`);
     if (!res.ok) { if (DEBUG) log('  тело:', text.slice(0, 200)); return null; }
@@ -91,6 +91,45 @@ async function fromYandex() {
   return null;
 }
 
+// ---------- Веб-страница Яндекс Музыки (SSR) ----------
+// API отвечает 451 за пределами СНГ, а страница артиста отдаётся с данными внутри HTML.
+async function fetchText(url) {
+  try {
+    const res = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(8000) });
+    const text = await res.text();
+    log(`GET ${url} → ${res.status}, ${text.length} байт`);
+    return res.ok ? text : null;
+  } catch (e) {
+    log(`GET ${url} → ошибка: ${e.message}`);
+    return null;
+  }
+}
+
+// Next.js кладёт данные в self.__next_f.push([1,"..."]) — склеиваем и раскодируем
+function nextPayload(html) {
+  let out = '';
+  const re = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g;
+  let m;
+  while ((m = re.exec(html))) {
+    try { out += JSON.parse(m[1]); } catch { /* пропускаем битый кусок */ }
+  }
+  return out;
+}
+
+async function webDiagnostics() {
+  const html = await fetchText(YA_ARTIST_URL);
+  if (!html) return null;
+  const payload = nextPayload(html);
+  log(`страница: html ${html.length}, payload ${payload.length}`);
+  const text = payload || html;
+  for (const needle of ['сжечь', 'presave', 'preSave', 'upcoming', 'Upcoming', 'releaseDate', 'Предстоящ', '"albums"', 'Алиби', 'АЛИБИ']) {
+    const i = text.indexOf(needle);
+    log(`  «${needle}»: ${i < 0 ? 'нет' : `позиция ${i}, всего ${text.split(needle).length - 1}`}`);
+    if (i >= 0) log(`    …${text.slice(Math.max(0, i - 500), i + 700).replace(/\s+/g, ' ')}…`);
+  }
+  return { html, payload };
+}
+
 // ---------- Apple Music (iTunes Search API) ----------
 const itCover = (url) => (url ? url.replace(/\/\d+x\d+bb\./, '/1000x1000bb.') : null);
 const isOurs = (artistName) => new RegExp(ARTIST_NAME, 'i').test(artistName || '');
@@ -154,7 +193,7 @@ function build({ source, albums, popular }) {
 async function checkCover(url) {
   if (!url) return;
   try {
-    const res = await fetch(url, { method: 'HEAD', headers: { Referer: 'https://matbank40.github.io/' }, signal: AbortSignal.timeout(15000) });
+    const res = await fetch(url, { method: 'HEAD', headers: { Referer: 'https://matbank40.github.io/' }, signal: AbortSignal.timeout(8000) });
     log(`Обложка ${url} → ${res.status} ${res.headers.get('content-type')}, CORP=${res.headers.get('cross-origin-resource-policy')}, ACAO=${res.headers.get('access-control-allow-origin')}`);
   } catch (e) {
     log('Проверка обложки не удалась:', e.message);
@@ -163,6 +202,7 @@ async function checkCover(url) {
 
 async function main() {
   mkdirSync(dirname(OUT), { recursive: true });
+  if (DEBUG) await webDiagnostics();
   const raw = (await fromYandex()) || (await fromItunes());
   if (!raw || (!raw.albums.length && !raw.popular.length)) {
     if (existsSync(OUT)) { log('Источники недоступны, оставляю предыдущий public/yandex.json'); return; }
@@ -179,10 +219,19 @@ async function main() {
   await checkCover(data.upcoming?.cover || data.releases[0]?.cover);
 }
 
+// Общий дедлайн: синк не должен задерживать деплой
+const deadline = setTimeout(() => {
+  log('Дедлайн 60 с — завершаю синк, сайт соберётся с прежними данными');
+  if (!existsSync(OUT)) writeFileSync(OUT, JSON.stringify({ updatedAt: new Date().toISOString(), source: 'none' }, null, 2));
+  clearTimeout(deadline);
+process.exit(0);
+}, 60000);
+
 try {
   await main();
 } catch (e) {
   log('Неожиданная ошибка:', e.stack || e.message);
   if (!existsSync(OUT)) writeFileSync(OUT, JSON.stringify({ updatedAt: new Date().toISOString(), source: 'none' }, null, 2));
 }
+clearTimeout(deadline);
 process.exit(0);
