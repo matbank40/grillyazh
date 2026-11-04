@@ -7,9 +7,13 @@
   <meta name="description" content="GRILLYAZH: хиты, новый релиз «После прослушивания сжечь», концерты и контакты для организаторов." />
   <meta name="theme-color" content="#0b0a09" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="GRILLYAZH" />
-  <meta property="og:description" content="Привет, это я. Включай звук." />
-  <meta property="og:image" content="photos/og.jpg" />
+  <meta property="og:url" content="https://matbank40.github.io/grillyazh/" />
+  <meta property="og:title" content="GRILLYAZH — «После прослушивания сжечь» · 6 ноября" />
+  <meta property="og:description" content="Новый релиз. Пресейв, хиты и концерты — со звуком." />
+  <meta property="og:image" content="https://matbank40.github.io/grillyazh/photos/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,14 +23,16 @@
 <body class="is-loading">
   <!-- ===== Загрузка и вход со звуком ===== -->
   <div class="loader">
+    <img class="gate__bg" src="photos/stage-dive.webp" alt="" aria-hidden="true" />
     <div class="gate" aria-hidden="true">
       <p class="serif gate__hello">привет, это я</p>
       <button class="gate__play" type="button">
         <span class="gate__ring" aria-hidden="true"></span>
         <span class="gate__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" fill="currentColor" /></svg></span>
-        <span class="gate__label">Войти со звуком</span>
+        <span class="gate__label">Включить звук</span>
       </button>
       <button class="gate__mute label" type="button">Без звука</button>
+      <p class="serif gate__note" data-gate-note></p>
     </div>
     <div class="loader__row">
       <span class="label">GRILLYAZH</span>
@@ -96,16 +102,19 @@
           <span class="release__w release__w--b serif" data-release-b></span>
         </h2>
         <div class="release__stage">
-          <div class="release__under">
-            <p class="serif release__name" data-release-name></p>
-            <p class="label" data-release-when>Выходит</p>
-            <p class="release__date" data-release-date></p>
-            <div class="countdown" data-countdown></div>
-            <a class="btn btn--light btn--lg" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener" data-release-cta>Пресейв на Яндекс Музыке ↗</a>
-          </div>
           <div class="release__cover">
             <canvas class="release__canvas" aria-hidden="true"></canvas>
             <img class="release__img" alt="" data-release-img />
+          </div>
+        </div>
+        <div class="release__under">
+          <p class="serif release__name" data-release-name></p>
+          <p class="label" data-release-when>Выходит</p>
+          <p class="release__date" data-release-date></p>
+          <div class="countdown" data-countdown></div>
+          <div class="release__btns">
+            <a class="btn btn--light btn--lg" href="https://music.yandex.ru/artist/16514152" target="_blank" rel="noopener" data-release-cta>Пресейв на Яндекс Музыке <span class="arr">↗</span></a>
+            <button class="btn btn--ghost btn--lg" type="button" data-remind>Напомнить в календаре</button>
           </div>
         </div>
         <p class="label release__hint">Листай — обложка сгорит</p>

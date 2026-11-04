@@ -41,7 +41,8 @@ void main() {
   vec2 uv = vUv;
   float aspect = uRes.x / uRes.y;
   // плавное приближение при загрузке и прокрутке
-  float zoom = 1.0 + (1.0 - uIntro) * 0.18 + uScroll * 0.12 + uBeat * 0.018;
+  // медленный «наезд камеры» + приближение при загрузке и прокрутке
+  float zoom = 1.03 + sin(uTime * 0.045) * 0.03 + (1.0 - uIntro) * 0.18 + uScroll * 0.12 + uBeat * 0.012;
   uv = (uv - 0.5) / zoom + 0.5;
 
   vec2 d = vec2(0.0);
@@ -63,7 +64,8 @@ void main() {
   d += vec2(s1 - 0.5, (s2 - 0.5) * 0.5) * (0.006 + uBeat * 0.008) * (0.4 + rise);
 
   vec2 q = cover(uv + d);
-  float ca = 0.0008 + heat * 0.01 + uBeat * 0.0022;
+  // в покое кадр чистый; цвет расслаивается только под курсором
+  float ca = heat * 0.011 + uBeat * 0.0009;
   vec3 col;
   col.r = texture2D(uTex, cover(uv + d * 1.25 + vec2(ca, 0.0))).r;
   col.g = texture2D(uTex, q).g;

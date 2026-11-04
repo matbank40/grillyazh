@@ -98,14 +98,36 @@ function renderRelease({ rel, isOut }) {
     tick();
     setInterval(tick, 1000);
   }
-  // блок на первом экране
+  // карточка на первом экране и подпись на входе
+  const when = isOut ? 'Новый релиз' : `${p.day} ${MONTHS[p.month]} — новый релиз`;
   $('[data-hero-release]').innerHTML = `
-    <p class="serif hero__serif">${isOut ? 'новый релиз' : `скоро · ${p.day} ${MONTHS[p.month]}`}</p>
-    <p class="hero__song"><span>${esc(rel.title)}</span></p>
-    <div class="hero__btns">
-      <a class="btn btn--light" href="${esc(rel.url)}" target="_blank" rel="noopener">${isOut ? 'Слушать' : 'Пресейв'}</a>
-      <a class="btn btn--ghost" href="#hits" data-scroll>Хиты</a>
-    </div>`;
+    <a class="hero__card" href="${esc(rel.url)}" target="_blank" rel="noopener">
+      <img src="${cover(rel.cover)}" alt="" />
+      <span><small>${when}</small><b>${esc(rel.title)}</b><span class="arr-link">${isOut ? 'Слушать' : 'Пресейв'} ↗</span></span>
+    </a>`;
+  $('[data-gate-note]').textContent = isOut ? `новый релиз — «${rel.title}»` : `${p.day} ${MONTHS[p.month]} — «${rel.title}»`;
+  // напоминание в календарь (.ics) — для тех, кто не залогинен в Яндексе
+  const remind = $('[data-remind]');
+  if (isOut) remind.remove();
+  else {
+    remind.addEventListener('click', () => {
+      const start = new Date(rel.releaseDate);
+      const stamp = (d) => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      const ics = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//GRILLYAZH//site//RU', 'BEGIN:VEVENT',
+        `UID:${start.getTime()}@grillyazh`, `DTSTAMP:${stamp(new Date())}`,
+        `DTSTART:${stamp(start)}`, `DTEND:${stamp(new Date(start.getTime() + 3600e3))}`,
+        `SUMMARY:GRILLYAZH — «${rel.title}» вышел`, `DESCRIPTION:Слушать: ${rel.url}`, `URL:${rel.url}`,
+        'BEGIN:VALARM', 'TRIGGER:PT9H', 'ACTION:DISPLAY', 'DESCRIPTION:Новый релиз GRILLYAZH', 'END:VALARM',
+        'END:VEVENT', 'END:VCALENDAR',
+      ].join('\r\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+      a.download = 'grillyazh-release.ics';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    });
+  }
 }
 
 function renderHits(tracks) {
@@ -160,9 +182,9 @@ function renderTour() {
     const word = '<span>Новые даты</span><span>скоро</span>';
     $('[data-upcoming]').innerHTML = `
       <div class="soon">
-        <div class="soon__marquee" aria-hidden="true"><div class="soon__track">${word.repeat(6)}</div></div>
+        <a class="soon__marquee" href="${links.telegram}" target="_blank" rel="noopener" aria-label="Новые даты — скоро. Telegram-канал"><div class="soon__track" aria-hidden="true">${word.repeat(6)}</div></a>
         <div class="soon__row rv">
-          <p><span class="serif">Анонсы и старт продаж</span> — первыми в Telegram-канале.</p>
+          <p>анонсы и старт продаж — первыми в телеграме</p>
           <a class="btn btn--light btn--lg" href="${links.telegram}" target="_blank" rel="noopener">Подписаться ↗</a>
         </div>
       </div>`;
@@ -321,6 +343,7 @@ menuBtn.addEventListener('click', () => setMenu(!document.documentElement.classL
 addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 
 let lastY = 0;
+let entered = false;
 function onScroll() {
   const y = scrollPos();
   const menuOpen = document.documentElement.classList.contains('menu-open');
@@ -332,6 +355,8 @@ function onScroll() {
   const hr = $('.hits').getBoundingClientRect();
   if (hr.top > 0) setTrack(0);
   else if (hr.bottom < innerHeight) setTrack(data.tracks.length - 1);
+  const nearFooter = $('.footer').getBoundingClientRect().top < innerHeight * 0.75;
+  if (entered) playerEl.classList.toggle('show', y > innerHeight * 0.4 && !nearFooter);
 }
 if (lenis) lenis.on('scroll', onScroll);
 else addEventListener('scroll', onScroll, { passive: true });
@@ -374,7 +399,7 @@ function initRelease() {
     pin.style.setProperty('--ax', `${(-spread * 14).toFixed(2)}vw`);
     pin.style.setProperty('--bx', `${(spread * 14).toFixed(2)}vw`);
     // заголовок уступает место дате и кнопке
-    pin.style.setProperty('--to', (1 - range(p, 0.38, 0.62)).toFixed(3));
+    pin.style.setProperty('--to', (1 - range(b, 0.55, 0.85)).toFixed(3));
   };
   if (reduceMotion) { apply(1); return; }
   apply(0);
@@ -559,16 +584,15 @@ function intro() {
     fx?.start();
   }
 
-  let entered = false;
   const enter = (withSound) => {
     if (entered) return;
     entered = true;
+    onScroll();
     if (withSound) soundOn();
     document.body.classList.remove('is-loading');
     lenis?.start();
     fitWords();
     ScrollTrigger.refresh();
-    playerEl.classList.add('show');
     gate.setAttribute('aria-hidden', 'true');
     if (reduceMotion) { loader.remove(); $$('.hero__hello .line').forEach((l) => l.classList.add('in')); return; }
     gsap.timeline({ onComplete: () => loader.remove() })
