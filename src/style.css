@@ -187,7 +187,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .gate__mute { background: none; border: 0; cursor: pointer; padding: 10px; }
 .gate__mute:hover { color: var(--ink); }
 .loader__row, .loader__bar { transition: opacity 0.6s; }
+.loader__row, .loader__bar { pointer-events: none; }
 .loader.is-gate .loader__row, .loader.is-gate .loader__bar { opacity: 0; }
+.gate { z-index: 1; }
 
 /* ---------- Привет на первом экране ---------- */
 .hero__hello { position: absolute; left: var(--pad); bottom: calc(var(--word-h, 20vw) + 2.2vw); }
