@@ -86,4 +86,8 @@ export const gallery = [
   { name: 'stage-smoke', ratio: 2000 / 1334, caption: 'Дым', alt: 'GRILLYAZH на сцене в дыму, вид сверху на зал' },
   { name: 'stage-screen', ratio: 2000 / 1334, caption: 'Экран', alt: 'GRILLYAZH на сцене в красном свете на фоне экрана' },
   { name: 'stage-duo', ratio: 2000 / 1334, caption: 'Дуэт', alt: 'GRILLYAZH поёт вдвоём на сцене перед залом' },
+  { name: 'stage-cap', ratio: 1335 / 2000, caption: 'Голос', alt: 'GRILLYAZH поёт на сцене в кепке' },
+  { name: 'stage-point', ratio: 1335 / 2000, caption: 'Жест', alt: 'GRILLYAZH на сцене с поднятой рукой на фоне зелёного логотипа' },
+  { name: 'stage-snow', ratio: 2000 / 1333, caption: 'Снег', alt: 'GRILLYAZH прыгает на сцене под снегом из хлопушек' },
+  { name: 'stage-lights', ratio: 2000 / 1333, caption: 'Фонарики', alt: 'GRILLYAZH поёт перед залом с фонариками' },
 ];
