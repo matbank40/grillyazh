@@ -137,22 +137,29 @@ const isOurs = (artistName) => new RegExp(ARTIST_NAME, 'i').test(artistName || '
 async function fromItunes() {
   const albumsRes = await getJson(`https://itunes.apple.com/search?term=${ARTIST_NAME}&entity=album&country=ru&lang=ru_ru&limit=200`);
   const songsRes = await getJson(`https://itunes.apple.com/search?term=${ARTIST_NAME}&entity=song&country=ru&lang=ru_ru&limit=200`);
-  const albumsRaw = (albumsRes?.results || []).filter((a) => isOurs(a.artistName));
+  // lookup по id артиста видит и релизы, которые ещё не вышли (предзаказ)
+  const artistId = (albumsRes?.results || []).find((a) => /^grillyazh$/i.test(a.artistName))?.artistId;
+  const lookup = artistId
+    ? await getJson(`https://itunes.apple.com/lookup?id=${artistId}&entity=album&country=ru&lang=ru_ru&limit=200&sort=recent`)
+    : null;
+  const albumsRaw = [...(lookup?.results || []), ...(albumsRes?.results || [])]
+    .filter((a) => a.wrapperType === 'collection' && isOurs(a.artistName));
   const songsRaw = (songsRes?.results || []).filter((s) => isOurs(s.artistName));
   if (!albumsRaw.length && !songsRaw.length) return null;
 
+  const clean = (name) => String(name).replace(/\s+-\s+(Single|EP)$/i, '');
   const seen = new Set();
   const albums = albumsRaw
     .map((a) => ({
       id: `it${a.collectionId}`,
       // Apple дописывает « - Single» / « - EP» к названию
-      title: String(a.collectionName).replace(/\s+-\s+(Single|EP)$/i, ''),
+      title: clean(a.collectionName),
       year: a.releaseDate ? new Date(a.releaseDate).getFullYear() : null,
       type: /single/i.test(a.collectionName) || a.trackCount === 1 ? 'single' : 'album',
       artists: a.artistName,
       cover: itCover(a.artworkUrl100),
       // ссылка ведёт на поиск этого релиза в Яндекс Музыке
-      url: `https://music.yandex.ru/search?text=${encodeURIComponent(`${a.artistName} ${String(a.collectionName).replace(/\s+-\s+(Single|EP)$/i, '')}`)}`,
+      url: `https://music.yandex.ru/search?text=${encodeURIComponent(`${a.artistName} ${clean(a.collectionName)}`)}`,
       appleUrl: a.collectionViewUrl,
       releaseDate: a.releaseDate || null,
     }))
@@ -169,6 +176,26 @@ async function fromItunes() {
     cover: itCover(s.artworkUrl100),
   }));
   return { source: 'apple', albums, popular };
+}
+
+// ---------- Deezer: часто знает о релизах заранее ----------
+async function deezerUpcoming() {
+  const found = await getJson(`https://api.deezer.com/search/artist?q=${ARTIST_NAME}`);
+  const artist = (found?.data || []).find((a) => /^grillyazh$/i.test(a.name));
+  if (!artist) return [];
+  const res = await getJson(`https://api.deezer.com/artist/${artist.id}/albums?limit=100`);
+  const list = res?.data || [];
+  if (DEBUG) log(`deezer: альбомов ${list.length}, свежие: ${list.slice(0, 5).map((a) => `«${a.title}» ${a.release_date}`).join('; ')}`);
+  return list.map((a) => ({
+    id: `dz${a.id}`,
+    title: a.title,
+    year: a.release_date ? Number(a.release_date.slice(0, 4)) : null,
+    type: a.record_type === 'single' ? 'single' : 'album',
+    artists: ARTIST_NAME,
+    cover: a.cover_xl || a.cover_big || null,
+    url: `https://music.yandex.ru/search?text=${encodeURIComponent(`${ARTIST_NAME} ${a.title}`)}`,
+    releaseDate: a.release_date ? `${a.release_date}T00:00:00+03:00` : null,
+  }));
 }
 
 // ---------- Сборка результата ----------
@@ -204,6 +231,13 @@ async function main() {
   mkdirSync(dirname(OUT), { recursive: true });
   if (DEBUG) await webDiagnostics();
   const raw = (await fromYandex()) || (await fromItunes());
+  // Анонсы с Deezer добавляем, если такого названия ещё нет
+  if (raw && raw.source !== 'yandex') {
+    const known = new Set(raw.albums.map((x) => x.title.toLowerCase()));
+    for (const d of await deezerUpcoming()) {
+      if (!known.has(d.title.toLowerCase())) { raw.albums.push(d); known.add(d.title.toLowerCase()); }
+    }
+  }
   if (!raw || (!raw.albums.length && !raw.popular.length)) {
     if (existsSync(OUT)) { log('Источники недоступны, оставляю предыдущий public/yandex.json'); return; }
     writeFileSync(OUT, JSON.stringify({ updatedAt: new Date().toISOString(), source: 'none' }, null, 2));
