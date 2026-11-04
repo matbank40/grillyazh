@@ -33,7 +33,7 @@ button, input, textarea { font: inherit; color: inherit; }
 
 /* ---------- Типографика ---------- */
 .label {
-  margin: 0; font: 500 11px/1.4 var(--body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute);
+  margin: 0; font: 600 12px/1.4 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
   display: inline-flex; align-items: baseline; gap: 14px;
 }
 /* запас снизу, чтобы маска не срезала хвосты У, Д, Ц */
@@ -188,9 +188,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .gate__play:hover { color: var(--red); }
 .gate__icon { display: grid; place-items: center; width: 0.82em; height: 0.82em; border-radius: 50%; background: currentColor; }
 .gate__icon svg { width: 40%; height: 40%; margin-left: 8%; color: var(--bg); }
-.gate__mute { background: none; border: 0; cursor: pointer; padding: 8px; font: 500 15px/1 var(--body); color: var(--mute); text-decoration: underline; text-underline-offset: 4px; }
+.gate__mute { background: none; border: 0; cursor: pointer; padding: 8px; font: 600 18px/1 var(--display); text-transform: uppercase; letter-spacing: 0.06em; color: var(--mute); }
 .gate__mute:hover { color: var(--ink); }
-.gate__note { position: absolute; bottom: 28px; left: 0; right: 0; margin: 0; font: 500 13px/1 var(--body); color: var(--mute); }
+.gate__note { position: absolute; bottom: 28px; left: 0; right: 0; margin: 0; font: 600 18px/1 var(--display); text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink); }
 .loader__row, .loader__bar { transition: opacity 0.6s; }
 .loader__row, .loader__bar { pointer-events: none; }
 .loader.is-gate .loader__row, .loader.is-gate .loader__bar { opacity: 0; }
